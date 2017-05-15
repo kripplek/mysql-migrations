@@ -14,7 +14,7 @@ A node project with [mysql](https://github.com/mysqljs/mysql) used for database.
 It can be installed using npm.
 
 ```
-npm install mysql-migrations
+npm install mysql-migrations --save-dev
 ```
 
 ## Setup
@@ -37,12 +37,21 @@ var connection = mysql.createPool({
 migration.init(connection, __dirname + '/migrations');
 ```
 
-## Adding Migrations
-Migrations can be added in two ways.
+### If you already have a build process for your project like Gulp or Shipit
+```
+var migration = require('mysql-migrations');\
+migration.init(mysqlConnection,migrationsPath);
+```
 
-1. Run `node migration.js add migration create_table_users`. Now open the migrations folder. Locate the newest file with greatest timestamp as it predecessor. Write the query in `up` key of the json created. As a part of good practice, also write the script to undo the migration in `down` key.
-2. Run `node migration.js add seed create_table_users` to add a seed.
-3. Run `node migration.js add migration create_table_users "CREATE TABLE mysql_migrations_347ertt3e (user_id INT NOT NULL, UNIQUE KEY user_id (user_id) )"`. Locate the newest file with greatest timestamp as it predecessor and open it. Query will be automatically added as `up` key. However `down` key needs to be filled manually.
+
+## Adding Migrations
+Migrations can be added in two ways. 
+
+> Replace {{migration_name}} at will.
+
+1. Run `node migration.js add migration {{migration_name}}`. Now open the migrations folder. Locate the newest file with greatest timestamp as it predecessor. Write the query in `up` key of the json created. As a part of good practice, also write the script to undo the migration in `down` key.
+2. Run `node migration.js add seed {{migration_name}}` to add a seed.
+3. Run `node migration.js add migration {{migration_name}} "CREATE TABLE mysql_migrations_347ertt3e (user_id INT NOT NULL, UNIQUE KEY user_id (user_id) )"`. Locate the newest file with greatest timestamp as it predecessor and open it. Query will be automatically added as `up` key. However `down` key needs to be filled manually.
 4. You may create the migration file and add a function.
 ```
 module.exports = {
@@ -63,12 +72,15 @@ There are few ways to run migrations.
 3. Run `node migration.js down`. Runs only 1 `down` migrations.
 4. Run `node migration.js refresh`. Runs all down migrations followed by all up.
 
+## TODO:
+Allow table alters as well as table creation
+
 ## Help and Support
 Will be more than happy to improve upon this version. This is an over night build and needs to be improved certainly. Will welcome everyone who wants to contribute.
 
 ## Credits and other stuff
 It is my first contribution to npm and I am sort of happy over it. I made this when I was really looking for a suitable tool with barebone settings allowing me to maintain database structure. I could not find a basic one and hence wrote my own and finally decided to publish. It took me around 2 hours to write the first version which barely works. But it still does my job.
 
-**Credits to [ramnique](https://github.com/ramnique/) (I worked with him at Stayzilla and he is a great mentor).
+>Credits to [ramnique](https://github.com/ramnique/) (I worked with him at Stayzilla and he is a great mentor).
 
-**And of course to my parents and gtka.
+>And of course to my parents and gtka.
